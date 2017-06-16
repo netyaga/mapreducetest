@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * Created by Александр Нетяга on 16.06.2017.
+ * Тестирование 1-3 stage вместе
  */
 public class TestAll {
 

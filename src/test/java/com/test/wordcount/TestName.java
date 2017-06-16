@@ -15,6 +15,7 @@ import java.util.Scanner;
 
 /**
  * Created by Александр Нетяга on 15.06.2017.
+ * Тестирование 1-го Stage
  */
 public class TestName {
     private StageOne.FullNameMapper fullNameMapper = new StageOne.FullNameMapper();

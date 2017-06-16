@@ -10,6 +10,7 @@ import java.io.IOException;
 
 /**
  * Created by Александр Нетяга on 16.06.2017.
+ * сливаем результаты первого и второго стейджа
  */
 public class StageThree {
     private static final String CONTENT_DELIMETER = ";";

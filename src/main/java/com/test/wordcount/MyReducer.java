@@ -8,6 +8,7 @@ import java.io.IOException;
 
 /**
  * Created by Александр Нетяга on 15.06.2017.
+ * reducer для подсчета слов
  */
 public class MyReducer extends Reducer<Text,IntWritable,Text,IntWritable> {
 

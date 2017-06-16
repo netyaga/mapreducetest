@@ -18,6 +18,7 @@ import java.util.Scanner;
 
 /**
  * Created by Александр Нетяга on 15.06.2017.
+ * тестирование 2-го стейджа
  */
 public class TestCdr {
 

@@ -16,6 +16,7 @@ import java.util.List;
 
 /**
  * Created by Александр Нетяга on 15.06.2017.
+ * тестирование мр-подсчет слов в тесте
  */
 public class TestCount {
     MapDriver<LongWritable, Text, Text, IntWritable> mapDriver;

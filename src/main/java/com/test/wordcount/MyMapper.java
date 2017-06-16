@@ -9,6 +9,7 @@ import java.io.IOException;
 
 /**
  * Created by Александр Нетяга on 15.06.2017.
+ * Маппер для подсчета слов
  */
 public class MyMapper extends Mapper<LongWritable,Text,Text,IntWritable> {
 
