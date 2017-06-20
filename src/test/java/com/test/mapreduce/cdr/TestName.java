@@ -1,5 +1,8 @@
-package com.test.wordcount;
+package com.test.mapreduce.cdr;
 
+import com.test.mapreduce.cdr.stages.one.FullNameMapper;
+import com.test.mapreduce.cdr.stages.one.NameReducer;
+import com.test.mapreduce.cdr.stages.one.SubsMapper;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mrunit.mapreduce.MapDriver;
@@ -18,8 +21,8 @@ import java.util.Scanner;
  * Тестирование 1-го Stage
  */
 public class TestName {
-    private StageOne.FullNameMapper fullNameMapper = new StageOne.FullNameMapper();
-    private StageOne.SubsMapper subsMapper = new StageOne.SubsMapper();
+    private FullNameMapper fullNameMapper = new FullNameMapper();
+    private SubsMapper subsMapper = new SubsMapper();
     private MapDriver<LongWritable, Text, Text, Text> nameMapDriver;
     private MapDriver<LongWritable, Text, Text, Text> subsMapDriver;
     private ReduceDriver<Text, Text, Text, Text> reduceDriver;
@@ -31,7 +34,7 @@ public class TestName {
 
     @Before
     public void setUp() throws Exception {
-        StageOne.NameReducer reducer = new StageOne.NameReducer();
+        NameReducer reducer = new NameReducer();
         nameMapDriver = MapDriver.newMapDriver(fullNameMapper);
         subsMapDriver = MapDriver.newMapDriver(subsMapper);
         reduceDriver = ReduceDriver.newReduceDriver(reducer);

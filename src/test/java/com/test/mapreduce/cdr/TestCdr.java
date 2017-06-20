@@ -1,9 +1,10 @@
-package com.test.wordcount;
+package com.test.mapreduce.cdr;
 
+import com.test.mapreduce.cdr.stages.two.CdrMapper;
+import com.test.mapreduce.cdr.stages.two.CdrReducer;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mrunit.mapreduce.MapDriver;
-import org.apache.hadoop.mrunit.mapreduce.MapReduceDriver;
 import org.apache.hadoop.mrunit.mapreduce.MultipleInputsMapReduceDriver;
 import org.apache.hadoop.mrunit.mapreduce.ReduceDriver;
 import org.apache.hadoop.mrunit.types.Pair;
@@ -21,18 +22,17 @@ import java.util.Scanner;
  * тестирование 2-го стейджа
  */
 public class TestCdr {
-
-
-    private StageTwo.CdrMapper mapper = new StageTwo.CdrMapper();
+    private CdrMapper mapper = new CdrMapper();
     private MapDriver<LongWritable, Text, Text, Text> mapperDriver;
     private ReduceDriver<Text, Text, Text, Text> reduceDriver;
     private MultipleInputsMapReduceDriver<Text, Text, Text, Text> mapReduceDriver;
     public static final String FILE_PATH = "input\\cdr.csv";
+    public static final String FILTER = "input\\filterDate.txt";
 
     @Before
     public void setUp() {
 
-        StageTwo.CdrReducer reducer = new StageTwo.CdrReducer();
+        CdrReducer reducer = new CdrReducer();
         mapperDriver = MapDriver.newMapDriver(mapper);
         reduceDriver = ReduceDriver.newReduceDriver(reducer);
         mapReduceDriver = MultipleInputsMapReduceDriver.newMultipleInputMapReduceDriver(reducer);
@@ -77,5 +77,18 @@ public class TestCdr {
         }
 
 
+    }
+
+    @Test
+    public void testFilterDate() throws  IOException, InterruptedException{
+        mapReduceDriver.withCacheFile(FILTER);
+
+        mapReduceDriver.withInput(mapper, new LongWritable(), new Text("0\t01|9621266117|20170105235959|79621009999||NGMO|2||100|74955042222|79605550000|||041611|I||||||250995148305377|356258066657110||34967|||22101||A|||11|V|81079006658016|274||||SE|||G|16|||||||||||||||Y|CF0279.ysakhalinsk.20160831202215||1|||||79006658016||||+@@+1{79098509981}2{1}3{1}4{0}5{79621009999}6{41310BD7B2}7{79006658016}"));
+        mapReduceDriver.withInput(mapper, new LongWritable(), new Text("0\t01|9621266117|20170101235959|79621009999||NGMO|2||100|74955042222|79605550000|||041611|I||||||250995148305377|356258066657110||34967|||22101||A|||11|V|81079006658016|274||||SE|||G|16|||||||||||||||Y|CF0279.ysakhalinsk.20160831202215||1|||||79006658016||||+@@+1{79098509981}2{1}3{1}4{0}5{79621009999}6{41310BD7B2}7{79006658016}"));
+        mapReduceDriver.withInput(mapper, new LongWritable(), new Text("0\t01|9621266117|20170103235959|79621009999||NGMO|2||100|74955042222|79605550000|||041611|I||||||250995148305377|356258066657110||34967|||22101||A|||11|S|81079006658016|274||||SE|||G|16|||||||||||||||Y|CF0279.ysakhalinsk.20160831202215||1|||||79006658016||||+@@+1{79098509981}2{1}3{1}4{0}5{79621009999}6{41310BD7B2}7{79006658016}"));
+
+        mapReduceDriver.withOutput(new Text("9621266117"), new Text("20170103;0;0;0;0;1;0;0;0"));
+        mapReduceDriver.withOutput(new Text("9621266117"), new Text("20170105;1;0;0;0;0;0;0;0"));
+        mapReduceDriver.runTest();
     }
 }

@@ -1,6 +1,7 @@
-package com.test.wordcount;
+package com.test.mapreduce.wordcount;
 
-import org.apache.hadoop.conf.Configuration;
+import com.test.mapreduce.wordcount.WordcountMapper;
+import com.test.mapreduce.wordcount.WordcountReducer;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -25,8 +26,8 @@ public class TestCount {
 
     @Before
     public void setUp() throws IOException{
-        MyMapper mapper = new MyMapper();
-        MyReducer reducer = new MyReducer();
+        WordcountMapper mapper = new WordcountMapper();
+        WordcountReducer reducer = new WordcountReducer();
         mapDriver = mapDriver.newMapDriver(mapper);
         reduceDriver = reduceDriver.newReduceDriver(reducer);
         mapReduceDriver = mapReduceDriver.newMapReduceDriver(mapper,reducer);

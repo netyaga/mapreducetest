@@ -1,5 +1,13 @@
-package com.test.wordcount;
+package com.test.mapreduce.cdr;
 
+import com.test.mapreduce.cdr.stages.one.FullNameMapper;
+import com.test.mapreduce.cdr.stages.one.NameReducer;
+import com.test.mapreduce.cdr.stages.one.SubsMapper;
+import com.test.mapreduce.cdr.stages.three.JoinCdrMapper;
+import com.test.mapreduce.cdr.stages.three.JoinNameMapper;
+import com.test.mapreduce.cdr.stages.three.JoinReducer;
+import com.test.mapreduce.cdr.stages.two.CdrMapper;
+import com.test.mapreduce.cdr.stages.two.CdrReducer;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mrunit.mapreduce.MapDriver;
@@ -18,8 +26,8 @@ import java.util.List;
  */
 public class TestAll {
 
-    private StageOne.FullNameMapper fullNameMapper = new StageOne.FullNameMapper();
-    private StageOne.SubsMapper subsMapper = new StageOne.SubsMapper();
+    private FullNameMapper fullNameMapper = new FullNameMapper();
+    private SubsMapper subsMapper = new SubsMapper();
     private MapDriver<LongWritable, Text, Text, Text> nameMapDriver;
     private MapDriver<LongWritable, Text, Text, Text> subsMapDriver;
     private ReduceDriver<Text, Text, Text, Text> reduceDriver;
@@ -27,14 +35,14 @@ public class TestAll {
     private static final String DIM_BAN = "input\\DIM_BAN.csv";
     private static final String DIM_SUBS = "input\\DIM_SUBSCRIBER.csv";
 
-    private StageTwo.CdrMapper cdrMapper = new StageTwo.CdrMapper();
+    private CdrMapper cdrMapper = new CdrMapper();
     private MapDriver<LongWritable, Text, Text, Text> cdrMapperDriver;
     private ReduceDriver<Text, Text, Text, Text> cdrReduceDriver;
     private MultipleInputsMapReduceDriver<Text, Text, Text, Text> cdrMapReduceDriver;
     public static final String FILE_PATH = "input\\cdr.csv";
 
-    private StageThree.joinNameMapper joinNameMapper = new StageThree.joinNameMapper();
-    private StageThree.joinCdrMapper joinCdrMapper = new StageThree.joinCdrMapper();
+    private JoinNameMapper joinNameMapper = new JoinNameMapper();
+    private JoinCdrMapper joinCdrMapper = new JoinCdrMapper();
     private MapDriver<Text, Text, Text, Text> joinNameMapDriver;
     private MapDriver<Text, Text, Text, Text> joinCdrMapDriver;
     private ReduceDriver<Text, Text, Text, Text> joinReducerDriver;
@@ -44,7 +52,7 @@ public class TestAll {
     @Before
     public void setUp() {
 
-        StageOne.NameReducer nameReducer = new StageOne.NameReducer();
+        NameReducer nameReducer = new NameReducer();
         nameMapDriver = MapDriver.newMapDriver(fullNameMapper);
         subsMapDriver = MapDriver.newMapDriver(subsMapper);
         reduceDriver = ReduceDriver.newReduceDriver(nameReducer);
@@ -52,13 +60,13 @@ public class TestAll {
         mapReduceDriver.addMapper(fullNameMapper);
         mapReduceDriver.addMapper(subsMapper);
 
-        StageTwo.CdrReducer cdrReducer = new StageTwo.CdrReducer();
+        CdrReducer cdrReducer = new CdrReducer();
         cdrMapperDriver = MapDriver.newMapDriver(cdrMapper);
         cdrReduceDriver = ReduceDriver.newReduceDriver(cdrReducer);
         cdrMapReduceDriver = MultipleInputsMapReduceDriver.newMultipleInputMapReduceDriver(cdrReducer);
         cdrMapReduceDriver.addMapper(cdrMapper);
 
-        StageThree.joinReducer joinReducer = new StageThree.joinReducer();
+        JoinReducer joinReducer = new JoinReducer();
         joinCdrMapDriver = MapDriver.newMapDriver(joinCdrMapper);
         joinNameMapDriver = MapDriver.newMapDriver(joinNameMapper);
         joinReducerDriver = ReduceDriver.newReduceDriver(joinReducer);

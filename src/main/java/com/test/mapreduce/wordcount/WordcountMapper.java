@@ -1,4 +1,4 @@
-package com.test.wordcount;
+package com.test.mapreduce.wordcount;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
@@ -11,7 +11,7 @@ import java.io.IOException;
  * Created by Александр Нетяга on 15.06.2017.
  * Маппер для подсчета слов
  */
-public class MyMapper extends Mapper<LongWritable,Text,Text,IntWritable> {
+public class WordcountMapper extends Mapper<LongWritable,Text,Text,IntWritable> {
 
     private final IntWritable one = new IntWritable(1);
     private Text wordOut = new Text();
